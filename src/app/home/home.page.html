@@ -1,11 +1,44 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="primary">
     <ion-title>
-      Blank
+      Ionic Calendar
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <calendar></calendar>
+  <ion-segment [(ngModel)]="calendar.mode">
+    <ion-segment-button value="month">
+      Month
+    </ion-segment-button>
+    <ion-segment-button value="week">
+      Week
+    </ion-segment-button>
+    <ion-segment-button value="day">
+      Day
+    </ion-segment-button>
+  </ion-segment>
+
+  <ion-row class="ion-justify-content-center">
+    <ion-col size="2">
+      <ion-button fill="clear" (click)="calendarBack()">
+        <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-col>
+    <ion-col size="8">
+      <h2 class="ion-text-center">{{ viewTitle }}</h2>
+    </ion-col>
+    <ion-col size="2">
+      <ion-button fill="clear" (click)="calendarNext()">
+        <ion-icon name="arrow-forward" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-col>
+  </ion-row>
+
+  <calendar
+    [calendarMode]="calendar.mode"
+    (onTitleChanged)="viewTitle = $event"
+    [startingDayWeek]="1"
+  >
+  </calendar>
 </ion-content>

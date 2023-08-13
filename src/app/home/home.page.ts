@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
+import { CalendarComponent, CalendarMode } from 'ionic7-calendar';
 
 @Component({
   selector: 'app-home',
@@ -7,6 +8,26 @@ import { Component } from '@angular/core';
 })
 export class HomePage {
 
+  calendar = {
+    mode: 'month' as CalendarMode,
+    currentDate: new Date(),
+  };
+  viewTitle = '';
+
+  @ViewChild(CalendarComponent) myCal!: CalendarComponent;
+
   constructor() {}
+
+  setToday() {
+    this.myCal.currentDate = new Date();
+  }
+
+  calendarBack() {
+    this.myCal.slidePrev();
+  }
+
+  calendarNext() {
+    this.myCal.slideNext();
+  }
 
 }
