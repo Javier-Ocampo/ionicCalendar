@@ -20,15 +20,15 @@
   </ion-segment>
 
   <ion-row class="ion-justify-content-center">
-    <ion-col size="2">
+    <ion-col size="3">
       <ion-button fill="clear" (click)="calendarBack()">
         <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-col>
-    <ion-col size="8">
+    <ion-col size="6">
       <h2 class="ion-text-center">{{ viewTitle }}</h2>
     </ion-col>
-    <ion-col size="2">
+    <ion-col size="3">
       <ion-button fill="clear" (click)="calendarNext()">
         <ion-icon name="arrow-forward" slot="icon-only"></ion-icon>
       </ion-button>
@@ -39,6 +39,84 @@
     [calendarMode]="calendar.mode"
     (onTitleChanged)="viewTitle = $event"
     [startingDayWeek]="1"
+    [startHour]="8"
+    [endHour]="20"
+    (onTimeSelected)="onTimeSelected($event)"
   >
   </calendar>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button id="inputmodal">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <ion-modal
+    #modal
+    trigger="inputmodal"
+    [presentingElement]="presentingElement"
+  >
+    <ng-template>
+      <ion-header class="ion-no-border">
+        <ion-toolbar color="light">
+          <ion-buttons slot="start">
+            <ion-button (click)="modal.dismiss()">Cancel</ion-button>
+          </ion-buttons>
+          <ion-title>
+            Add Event
+          </ion-title>
+          <ion-buttons slot="end">
+            <ion-button
+              color="primary"
+              strong
+              (click)="scheduleEvent()"
+              [disabled]="newEvent.title"
+            >
+              Add
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding modal">
+        <div class="group">
+          <ion-input
+            type="text"
+            [(ngModel)]="newEvent.title"
+            placeholder="Title"
+          />
+        </div>
+
+        <div class="group">
+          <ion-item>
+            <ion-label> All-day </ion-label>
+            <ion-toggle [(ngModel)]="newEvent.allDay"></ion-toggle>
+          </ion-item>
+
+          <ion-item (click)="showStart = !showStart">
+            <ion-label> Starts </ion-label>
+            <ion-text slot="end">{{ formatterStart }}</ion-text>
+          </ion-item>
+          <ion-datetime
+            #start
+            *ngIf="showStart"
+            [value]="newEvent.startTime"
+            [presentation]="newEvent.allDay ? 'date' : 'time-date'"
+          >
+          </ion-datetime>
+
+          <ion-item (click)="showEnd = !showEnd">
+            <ion-label> Ends </ion-label>
+            <ion-text slot="end">{{ formatterEnd }}</ion-text>
+          </ion-item>
+          <ion-datetime
+            #end
+            *ngIf="showEnd"
+            [value]="newEvent.endTime"
+            [presentation]="newEvent.allDay ? 'date' : 'time-date'"
+          ></ion-datetime>
+        </div>
+
+
+      </ion-content>
+    </ng-template>
+  </ion-modal>
 </ion-content>
