@@ -74,7 +74,28 @@ export class HomePage {
     if (this.calendar.mode === 'day' || this.calendar.mode === 'week') {
       this.modal.present();
     }
+  }
 
+  startChanged(value: any) {
+    this.newEvent.startTime = value;
+    this.formatterStart = new Intl.DateTimeFormat("en", {
+      hour: "2-digit",
+      minute: "2-digit",
+      day: "2-digit",
+      month: "short",
+      year: "numeric"
+    }).format(new Date(value));
+  }
+
+  endChanged(value: any) {
+    this.newEvent.endTime = value;
+    this.formatterEnd = new Intl.DateTimeFormat("en", {
+      hour: "2-digit",
+      minute: "2-digit",
+      day: "2-digit",
+      month: "short",
+      year: "numeric"
+    }).format(new Date(value));
   }
 
   scheduleEvent() {}

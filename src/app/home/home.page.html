@@ -100,6 +100,7 @@
             *ngIf="showStart"
             [value]="newEvent.startTime"
             [presentation]="newEvent.allDay ? 'date' : 'time-date'"
+            (ionChange)="startChanged(start.value)"
           >
           </ion-datetime>
 
@@ -112,6 +113,7 @@
             *ngIf="showEnd"
             [value]="newEvent.endTime"
             [presentation]="newEvent.allDay ? 'date' : 'time-date'"
+            (ionChange)="endChanged(end.value)"
           ></ion-datetime>
         </div>
 
