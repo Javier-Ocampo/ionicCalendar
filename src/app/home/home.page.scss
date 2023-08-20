@@ -8,3 +8,23 @@
   padding: 2px 8px 2px 8px;
   margin-bottom: 20px;
 }
+
+.indicator-container {
+  padding-left: 0.4rem;
+  padding-right: 0.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+}
+
+.event-indicator {
+  background: var(--ion-color-success);
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+}
+
+.week-event {
+  width: 100% !important;
+}

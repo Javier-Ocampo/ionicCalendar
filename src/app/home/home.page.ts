@@ -1,13 +1,14 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { IonModal, IonRouterOutlet } from '@ionic/angular';
 import { CalendarComponent, CalendarMode } from 'ionic7-calendar';
+import { CalEvent, EventsService } from '../services/events.service';
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
 })
-export class HomePage {
+export class HomePage implements OnInit {
 
   calendar = {
     mode: 'month' as CalendarMode,
@@ -23,7 +24,6 @@ export class HomePage {
 
   newEvent = {
     title: '',
-    desc: '',
     startTime: '',
     endTime: '',
     allDay: false
@@ -36,8 +36,12 @@ export class HomePage {
   formatterStart = '';
   formatterEnd = '';
 
-  constructor(private ionRouterOutlet: IonRouterOutlet) {
+  constructor(private ionRouterOutlet: IonRouterOutlet, private eventsService: EventsService) {
     this.presentingElement = ionRouterOutlet.nativeEl;
+  }
+
+  async ngOnInit() {
+    this.eventSource = await this.eventsService.getData();
   }
 
   setToday() {
@@ -98,6 +102,30 @@ export class HomePage {
     }).format(new Date(value));
   }
 
-  scheduleEvent() {}
+  scheduleEvent() {
+    const toAdd: CalEvent = {
+      title: this.newEvent.title,
+      startTime: new Date(this.newEvent.startTime),
+      endTime: new Date(this.newEvent.endTime),
+      allDay: this.newEvent.allDay
+    };
+
+    this.eventSource.push(toAdd);
+    this.myCal.loadEvents();
+    this.eventsService.addData(toAdd);
+
+    this.newEvent = {
+      title: '',
+      startTime: '',
+      endTime: '',
+      allDay: false
+    };
+
+    this.modal.dismiss();
+  }
+
+  onEventSelected(event: any) {
+    console.log('Event selected', event);
+  }
 
 }

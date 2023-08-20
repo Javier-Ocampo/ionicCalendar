@@ -36,12 +36,17 @@
   </ion-row>
 
   <calendar
+    [eventSource]="eventSource"
     [calendarMode]="calendar.mode"
     (onTitleChanged)="viewTitle = $event"
     [startingDayWeek]="1"
     [startHour]="8"
+    [autoSelect]="false"
     [endHour]="20"
     (onTimeSelected)="onTimeSelected($event)"
+    (onEventSelected)="onEventSelected($event)"
+    [monthviewDisplayEventTemplate]="template"
+    [weekviewAllDayEventTemplate]="weekviewAllDayEventTemplate"
   >
   </calendar>
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
@@ -62,14 +67,14 @@
             <ion-button (click)="modal.dismiss()">Cancel</ion-button>
           </ion-buttons>
           <ion-title>
-            Add Event
+            New Event
           </ion-title>
           <ion-buttons slot="end">
             <ion-button
               color="primary"
               strong
               (click)="scheduleEvent()"
-              [disabled]="newEvent.title"
+              [disabled]="!newEvent.title"
             >
               Add
             </ion-button>
@@ -121,4 +126,15 @@
       </ion-content>
     </ng-template>
   </ion-modal>
+  <ng-template #template let-view="view" let-row="row" let-col="col">
+    {{view.dates[row*7+col].label}}
+    <div class="indicator-container">
+      <div class="event-indicator" *ngFor="let e of view.dates[row*7+col].events"></div>
+    </div>
+  </ng-template>
+
+  <ng-template #weekviewAllDayEventTemplate let-displayEvent="displayEvent">
+    <div class="calendar-event-inner week-event">{{displayEvent.event.title}}</div>
+  </ng-template>
+
 </ion-content>
